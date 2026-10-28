@@ -1,0 +1,111 @@
+PP 2026 — PRACTICAL EXAM REFERENCE FILE
+Use only if your college permits saved reference files during the exam.
+Open with Notepad or VS Code; copy the required code into your approved Python/Jupyter environment.
+
+PRACTICAL 1 — BIAS DETECTION
+import pandas as pd
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+df=pd.DataFrame({"gender":["Male","Female"]*20,"score":[60,80,55,75,90,65,70,85]*5})
+df["hired"]=((df.score+(df.gender=="Male")*8)>=70).astype(int)
+df["gender_code"]=(df.gender=="Male").astype(int)
+X,y=df[["gender_code","score"]],df.hired
+Xtr,Xte,ytr,yte=train_test_split(X,y,random_state=42)
+m=LogisticRegression().fit(Xtr,ytr); t=Xte.copy(); t["pred"]=m.predict(Xte)
+male=t.loc[t.gender_code==1,"pred"].mean(); female=t.loc[t.gender_code==0,"pred"].mean()
+di=female/male if male else 0
+print("Disparate Impact:",di,"\nStatistical Parity Difference:",female-male)
+print("Potentially biased" if di<0.8 else "DI rule does not flag bias")
+
+PRACTICAL 2 — PROPHET VS ARIMA
+import numpy as np,pandas as pd,matplotlib.pyplot as plt
+from prophet import Prophet
+from statsmodels.tsa.arima.model import ARIMA
+from sklearn.metrics import mean_absolute_percentage_error,mean_squared_error
+np.random.seed(1)
+df=pd.DataFrame({"Date":pd.date_range("2025-01-01",periods=120),"Sales":100+np.arange(120)*.5+np.random.randn(120)*5})
+tr,te=df[:-30],df[-30:]
+p=Prophet(weekly_seasonality=True,daily_seasonality=True).fit(tr.rename(columns={"Date":"ds","Sales":"y"}))
+pf=p.predict(p.make_future_dataframe(periods=30)).tail(30)
+a=ARIMA(tr.Sales,order=(2,1,1)).fit().forecast(30)
+for n,v in [("Prophet",pf.yhat.values),("ARIMA",a.values)]:
+ print(n,"MAPE",mean_absolute_percentage_error(te.Sales,v)*100,"RMSE",mean_squared_error(te.Sales,v)**.5)
+plt.plot(te.Date,te.Sales,label="Actual"); plt.plot(te.Date,pf.yhat,label="Prophet"); plt.plot(te.Date,a,label="ARIMA")
+plt.fill_between(te.Date,pf.yhat_lower,pf.yhat_upper,alpha=.2); plt.legend(); plt.show()
+
+PRACTICAL 3 — CHURN, FN COST Rs. 10,000
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder,StandardScaler
+from sklearn.pipeline import make_pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import confusion_matrix,accuracy_score,precision_score,recall_score
+df=pd.DataFrame({"tenure":[2,5,10,20,40,60,3,8,15,50,4,30]*5,"charges":[90,80,70,60,50,40,100,95,75,45,110,55]*5,"contract":["Month","Month","Month","Year","Year","Two","Month","Month","Year","Two","Month","Year"]*5,"Churn":[1,1,1,0,0,0,1,1,0,0,1,0]*5})
+X,y=df.drop(columns="Churn"),df.Churn
+prep=ColumnTransformer([("num",make_pipeline(SimpleImputer(),StandardScaler()),["tenure","charges"]),("cat",OneHotEncoder(handle_unknown="ignore"),["contract"])])
+Xtr,Xte,ytr,yte=train_test_split(X,y,test_size=.25,random_state=1,stratify=y)
+for n,model in [("Logistic",LogisticRegression()),("Random Forest",RandomForestClassifier(random_state=1))]:
+ pipe=make_pipeline(prep,model).fit(Xtr,ytr); pred=pipe.predict(Xte); cm=confusion_matrix(yte,pred,labels=[0,1]); fn=cm[1,0]
+ print(n,"Accuracy",accuracy_score(yte,pred),"Precision",precision_score(yte,pred,zero_division=0),"Recall",recall_score(yte,pred,zero_division=0),"CM",cm,"FN Cost Rs.",fn*10000)
+
+PRACTICAL 4 — MOVIE RECOMMENDATION: SVD VS KNN
+from surprise import Dataset,SVD,KNNBasic,accuracy
+from surprise.model_selection import train_test_split
+data=Dataset.load_builtin("ml-100k"); tr,te=train_test_split(data,test_size=.25,random_state=42)
+for n,m in [("SVD",SVD(random_state=42)),("KNN",KNNBasic(verbose=False))]:
+ m.fit(tr); pred=m.test(te); print(n); accuracy.rmse(pred); accuracy.mae(pred)
+
+PRACTICAL 5 — ISOLATION FOREST FRAUD DETECTION
+import numpy as np
+from sklearn.ensemble import IsolationForest
+from sklearn.metrics import precision_score,recall_score,confusion_matrix
+np.random.seed(1); X=np.r_[np.random.normal(0,1,(99,3)),np.random.normal(5,1,(1,3))]; y=[0]*99+[1]
+pred=(IsolationForest(contamination=.01,random_state=1).fit_predict(X)==-1).astype(int)
+print(confusion_matrix(y,pred)); print("Precision",precision_score(y,pred,zero_division=0),"Recall",recall_score(y,pred,zero_division=0))
+
+PRACTICAL 6 — CHURN, FN COST Rs. 5,000
+Run Practical 3 code and change fn*10000 to fn*5000.
+
+PRACTICAL 7 — RFM + K-MEANS
+import pandas as pd,numpy as np
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+np.random.seed(1)
+df=pd.DataFrame({"CustomerID":np.random.randint(1,21,100),"Date":pd.to_datetime("2026-01-01")+pd.to_timedelta(np.random.randint(0,90,100),unit="D"),"Amount":np.random.randint(100,2000,100)})
+today=df.Date.max()+pd.Timedelta(days=1)
+rfm=df.groupby("CustomerID").agg(Recency=("Date",lambda x:(today-x.max()).days),Frequency=("Date","count"),Monetary=("Amount","sum")).reset_index()
+rfm["Cluster"]=KMeans(n_clusters=3,random_state=1,n_init=10).fit_predict(StandardScaler().fit_transform(rfm[["Recency","Frequency","Monetary"]]))
+print(rfm)
+
+PRACTICAL 8 — PROPHET FORECAST NEXT 30 DAYS
+import numpy as np,pandas as pd,matplotlib.pyplot as plt
+from prophet import Prophet
+np.random.seed(1)
+df=pd.DataFrame({"ds":pd.date_range("2025-01-01",periods=100),"y":100+np.arange(100)*.5+np.random.randn(100)*4})
+m=Prophet(weekly_seasonality=True,daily_seasonality=True).fit(df)
+f=m.predict(m.make_future_dataframe(periods=30))
+print(f.tail(30)[["ds","yhat","yhat_lower","yhat_upper"]]); m.plot(f); plt.show()
+
+PRACTICAL 9 — SENTIMENT VS STAR RATING
+import pandas as pd
+from textblob import TextBlob
+from scipy.stats import pearsonr
+df=pd.DataFrame({"Review":["Excellent product","Very bad product","It is okay","Love it","Waste of money"],"Rating":[5,1,3,5,1]})
+df["Score"]=df.Review.apply(lambda x:TextBlob(x).sentiment.polarity)
+df["Sentiment"]=df.Score.apply(lambda x:"Positive" if x>0 else ("Negative" if x<0 else "Neutral"))
+print(df); print("Correlation:",pearsonr(df.Score,df.Rating)[0])
+
+PRACTICAL 10 — APRIORI
+import pandas as pd
+from mlxtend.preprocessing import TransactionEncoder
+from mlxtend.frequent_patterns import apriori,association_rules
+transactions=[["Bread","Milk"],["Bread","Butter"],["Bread","Milk","Butter"],["Milk","Butter"],["Bread","Milk"],["Bread","Butter"]]
+enc=TransactionEncoder(); basket=pd.DataFrame(enc.fit(transactions).transform(transactions),columns=enc.columns_)
+items=apriori(basket,min_support=.3,use_colnames=True); print(items)
+print(association_rules(items,metric="confidence",min_threshold=.4)[["antecedents","consequents","support","confidence","lift"]])
+
+INSTALL LIBRARIES (only if permitted):
+pip install pandas numpy matplotlib scikit-learn statsmodels prophet scikit-surprise textblob scipy mlxtend
