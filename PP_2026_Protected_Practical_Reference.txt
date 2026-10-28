@@ -58,6 +58,37 @@ data=Dataset.load_builtin("ml-100k"); tr,te=train_test_split(data,test_size=.25,
 for n,m in [("SVD",SVD(random_state=42)),("KNN",KNNBasic(verbose=False))]:
  m.fit(tr); pred=m.test(te); print(n); accuracy.rmse(pred); accuracy.mae(pred)
 
+Practical 4 (Part 2 with dataset)
+import pandas as pd
+from surprise import Dataset, Reader, SVD, KNNBasic, accuracy
+from surprise.model_selection import train_test_split
+
+# Load dataset given by mam
+df = pd.read_csv("ratings.csv")
+
+# Prepare dataset
+reader = Reader(rating_scale=(1, 5))
+data = Dataset.load_from_df(
+    df[["userId", "movieId", "rating"]], reader
+)
+
+# Split dataset
+train, test = train_test_split(
+    data, test_size=0.25, random_state=42
+)
+
+# Compare SVD and KNN
+for name, model in [
+    ("SVD", SVD(random_state=42)),
+    ("KNN", KNNBasic(verbose=False))
+]:
+    model.fit(train)
+    predictions = model.test(test)
+
+    print(name)
+    accuracy.rmse(predictions)
+    accuracy.mae(predictions)
+
 PRACTICAL 5 — ISOLATION FOREST FRAUD DETECTION
 import numpy as np
 from sklearn.ensemble import IsolationForest
