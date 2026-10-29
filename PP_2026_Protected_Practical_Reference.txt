@@ -137,6 +137,23 @@ hdfs dfs -cat /user/output/part-r-00000
 http://localhost:9870
 http://localhost:8088
 
+#Practical Graphx
+import org.apache.spark.graphx._
+
+val v = sc.parallelize(Array((1L,"A"),(2L,"B"),(3L,"C")))
+val e = sc.parallelize(Array(Edge(1L,2L,1800),Edge(2L,3L,800),Edge(3L,1L,1400)))
+val g = Graph(v,e,"nowhere")
+
+println(g.numVertices)
+println(g.numEdges)
+g.edges.filter(_.attr > 1000).collect.foreach(println)
+g.triplets.take(3).foreach(println)
+g.inDegrees.collect.foreach(println)
+g.outDegrees.collect.foreach(println)
+g.degrees.collect.foreach(println)
+
+
+
 
 
 
