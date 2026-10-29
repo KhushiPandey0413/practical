@@ -1,395 +1,131 @@
-PRACTICAL 1 — BIAS DETECTION
-
-Aim: Gender ke basis par hiring mein bias detect karna using Disparate Impact aur Statistical Parity Difference.
-
-Steps:
-
-1. Python mein required libraries import karo.
-2. Male aur Female candidates ka sample dataset banao, jisme gender, score aur hiring result ho.
-3. Gender ke basis par candidates ka hiring result prepare karo.
-4. Gender ko numerical format mein convert karo, taaki model use kar sake.
-5. Features aur target variable separate karo.
-6. Dataset ko training aur testing sets mein divide karo.
-7. Logistic Regression model train karo.
-8. Test data par hiring predictions generate karo.
-9. Male aur Female candidates ki average hiring prediction calculate karo.
-10. Dono groups ke selection rates compare karo.
-11. Disparate Impact (DI) aur Statistical Parity Difference (SPD) calculate karo.
-12. DI agar 0.8 se kam ho, toh potential bias ka signal milta hai; warna DI rule bias flag nahi karta.
-
----
-
-PRACTICAL 2 — PROPHET VS ARIMA
-
-Aim: Prophet aur ARIMA models se sales forecast karna aur unki performance compare karna.
-
-Steps:
-
-1. Required libraries import karo.
-2. Date aur Sales columns wala sample time-series dataset banao.
-3. Dataset ko training data aur testing data mein divide karo. Last 30 days testing ke liye rakho.
-4. Prophet model ke liye Date aur Sales columns ko required format mein convert karo.
-5. Prophet model ko training data par fit karo.
-6. Agle 30 days ki predictions generate karo.
-7. ARIMA model ko training sales data par fit karo.
-8. ARIMA se agle 30 days ki predictions generate karo.
-9. Actual sales aur dono models ki predicted sales compare karo.
-10. Prophet aur ARIMA ke MAPE aur RMSE calculate karo.
-11. Actual sales aur forecast values ka graph plot karo.
-12. Prophet ki predicted values ke saath lower aur upper confidence interval show karo.
-13. Dono models ki error values compare karke performance interpret karo. Generally, lower MAPE aur RMSE better forecast accuracy indicate karte hain.
-
----
-
-PRACTICAL 3 — CUSTOMER CHURN PREDICTION (FN COST ₹10,000)
-
-Aim: Logistic Regression aur Random Forest se customer churn predict karna aur False Negative ki cost calculate karna.
-
-Steps:
-
-1. Required libraries import karo.
-2. Customer dataset banao, jisme tenure, charges, contract aur Churn columns hon.
-3. Features aur target variable separate karo.
-4. Numerical features ki missing values handle karo aur unhe scale karo.
-5. Categorical contract feature ko One-Hot Encoding se numerical format mein convert karo.
-6. Preprocessing steps ko model pipeline mein combine karo.
-7. Dataset ko training aur testing sets mein divide karo.
-8. Logistic Regression model train karo.
-9. Random Forest model train karo.
-10. Dono models se churn predictions generate karo.
-11. Confusion matrix calculate karo.
-12. Accuracy, Precision aur Recall calculate karo.
-13. Confusion matrix se False Negatives (FN) identify karo.
-14. FN ki sankhya ko ₹10,000 se multiply karke False Negative cost calculate karo.
-15. Dono models ke results compare karo. Kam FN ka matlab hai ki kam churn karne wale customers ko galti se non-churn predict kiya gaya.
-
----
-
-PRACTICAL 4 — MOVIE RECOMMENDATION (SVD VS KNN)
-
-Aim: SVD aur KNN models ki recommendation prediction performance compare karna.
-
-Steps:
-
-1. Pandas aur Surprise library ke required components import karo.
-2. Dataset ke according ratings data load karo. Agar mam CSV deti hain, toh us file ko read karo.
-3. Dataset mein user ID, movie ID aur rating columns identify karo.
-4. CSV data ko Surprise library ke required format mein convert karo.
-5. Rating scale ko dataset ki actual rating range ke according define karo.
-6. Dataset ko training aur testing sets mein divide karo.
-7. SVD model initialize karo.
-8. KNN model initialize karo.
-9. SVD ko training data par fit karo.
-10. SVD se testing data ki ratings predict karo.
-11. SVD ke RMSE aur MAE calculate karo.
-12. KNN ko training data par fit karo.
-13. KNN se testing data ki ratings predict karo.
-14. KNN ke RMSE aur MAE calculate karo.
-15. Dono models ke RMSE aur MAE compare karo. Generally, lower values ka matlab rating prediction mein kam error hai.
-
-Important: Agar dataset MovieLens built-in hai, toh use load kar sakte ho. Agar mam apni CSV deti hain, toh file name, column names aur rating range uske according set karni hogi.
-
----
-
-PRACTICAL 5 — FRAUD DETECTION USING ISOLATION FOREST
-
-Aim: Isolation Forest se anomalous transactions ya unusual data points identify karna.
-
-Steps:
-
-1. Required libraries import karo.
-2. Sample dataset banao, jisme normal aur anomalous observations hon.
-3. Actual labels prepare karo: normal observations ko 0 aur fraud/anomaly observations ko 1 label do.
-4. Features ko model ke input ke roop mein prepare karo.
-5. Isolation Forest model initialize karo.
-6. Contamination value 0.01 set karo, jo approximately 1% anomalies ka estimate represent karti hai.
-7. Model ko dataset par fit karo.
-8. Model ke predictions generate karo.
-9. Model ke output mein -1 ko anomaly aur 1 ko normal observation ke roop mein interpret karo.
-10. Predictions ko actual labels ke saath compare karne ke liye binary format mein convert karo.
-11. Confusion matrix calculate karo.
-12. Precision aur Recall calculate karo.
-13. Results se assess karo ki model ne kitni anomalies identify ki aur kitni galat predictions ki.
-
-Note: Sample data mein anomaly aur actual fraud ek hi cheez nahi hain. Real fraud detection ke liye suitable real transaction data aur verified labels chahiye.
-
----
+Practical 1
+
+a) Hadoop (core-site.xml) code
+<property>
+<name>fs.defaultFS</name>
+<value>hdfs://localhost:9000</value>
+</property>
+
+b) Hadoop (hdfs-site.xml) code
+<property>
+<name>dfs.replication</name>
+<value>1</value>
+</property>
+<property>
+<name>dfs.namenode.name.dir</name>
+<value>C:\Hadoop\hadoop-3.4.3\data\namenode</value>
+</property>
+<property>
+<name>dfs.datanode.name.dir</name>
+<value>C:\Hadoop\hadoop-3.4.3\data\datanode</value>
+</property>
+
+c) mapred-site.xml
+<property>
+<name>mapreduce.framework.name</name>
+<value>yarn</value>
+</property>
+
+d) yarn-site.xml Configuration
+<property>
+<name>yarn.nodemanager.aux.services</name>
+<value>mapreduce_shuffle</value>
+</property>
+<property>
+<name>yarn.nodemanager.aux.services.mapreduce_shuffle.class</name>
+<value>org.apache.hadoop.mapred.ShuffleHandler</value>
+</property>
+
+#Open a Command Prompt window and execute the NameNode initialization command:
+hdfs namenode -format
+cd C:\Hadoop\hadoop-3.4.3\sbin
+start-dfs.cmd
+start-yarn.cmd
+jps
+
+#add in web browser
+http://localhost:9870
+http://localhost:8088
+http://localhost:8042
+http://localhost:9864
+
+
+Practical 2
+
+1).WordCountMapper.java
+import java.io.IOException;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+public class WordCountMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+private final static IntWritable one = new IntWritable(1);
+private Text word = new Text();
+public void map(LongWritable key, Text value, Context context) throws IOException,
+InterruptedException {
+String line = value.toString();
+String[] words = line.split("\s+");
+for (String w : words) {
+word.set(w);
+context.write(word, one);
+}
+}
+}
+
+2. WordCountReducer.java
+import java.io.IOException;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+public class WordCountReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+public void reduce(Text key, Iterable<IntWritable> values, Context context) throws
+IOException, InterruptedException {
+int sum = 0;
+for (IntWritable val : values) {
+sum += val.get();
+}
+context.write(key, new IntWritable(sum));
+}
+}
+
+3. WordCountDriver.java
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+public class WordCountDriver {
+public static void main(String[] args) throws Exception {
+if (args.length != 2) {
+System.err.println("Usage: WordCountDriver <input path> <output path>");
+System.exit(-1);
+}
+Configuration conf = new Configuration();
+Job job = Job.getInstance(conf, "Word Count");
+job.setJarByClass(WordCountDriver.class);
+job.setMapperClass(WordCountMapper.class);
+job.setReducerClass(WordCountReducer.class);
+job.setOutputKeyClass(Text.class);
+job.setOutputValueClass(IntWritable.class);
+FileInputFormat.addInputPath(job, new Path(args[0]));
+FileOutputFormat.setOutputPath(job, new Path(args[1]));
+System.exit(job.waitForCompletion(true) ? 0 : 1);
+}
+}
 
-PRACTICAL 6 — CUSTOMER CHURN PREDICTION (FN COST ₹5,000)
+4. input.txt
+Big data technologies like Hadoop and Spark are used to process large datasets efficiently.
+Hive and Pig are tools that make data analysis easier on top of Hadoop.
 
-Aim: Customer churn prediction models ki False Negative cost ₹5,000 ke hisaab se calculate karna.
+#Open a Command Prompt window and execute 
+cd C:\wordcount
 
-Steps:
-
-1. Practical 3 ka customer churn dataset use karo.
-2. Features aur target variable prepare karo.
-3. Missing-value handling, scaling aur categorical encoding perform karo.
-4. Dataset ko training aur testing sets mein divide karo.
-5. Logistic Regression model train karo.
-6. Random Forest model train karo.
-7. Dono models se predictions generate karo.
-8. Confusion matrix calculate karo.
-9. Accuracy, Precision aur Recall calculate karo.
-10. Confusion matrix se False Negatives identify karo.
-11. False Negatives ki sankhya ko ₹5,000 se multiply karo.
-12. Dono models ki False Negative costs compare karo.
-13. Model ke results interpret karo aur dekho ki kaunsa model churn karne wale customers ko miss karne mein kam errors kar raha hai.
-
-Important: Practical 3 wale code mein cost calculation ko ₹10,000 se ₹5,000 karna hai. Baaki process same rahega.
-
----
-
-PRACTICAL 7 — RFM ANALYSIS AND K-MEANS CLUSTERING
-
-Aim: Customers ko purchasing behaviour ke basis par segments mein divide karna.
-
-Steps:
-
-1. Pandas, NumPy aur clustering libraries import karo.
-2. Sample customer transaction dataset banao, jisme Customer ID, Date aur Amount ho.
-3. Transaction dates ko datetime format mein convert karo.
-4. Reference date define karo, jo latest transaction date ke ek din baad ho.
-5. Customer ID ke basis par transactions group karo.
-6. Har customer ki Recency calculate karo: customer ne aakhri purchase kitne din pehle ki.
-7. Frequency calculate karo: customer ne kitni transactions ki.
-8. Monetary calculate karo: customer ne total kitni amount spend ki.
-9. Recency, Frequency aur Monetary values se RFM table banao.
-10. RFM numerical features ko StandardScaler se scale karo.
-11. K-Means model initialize karo aur clusters ki sankhya 3 set karo.
-12. Model ko scaled RFM data par fit karo.
-13. Har customer ko ek cluster assign karo.
-14. Customer ID, Recency, Frequency, Monetary aur Cluster ke saath final table display karo.
-15. Clusters ki RFM values dekhkar customer segments interpret karo, jaise recent, frequent ya high-spending customers.
-
-Important: Cluster numbers 0, 1 aur 2 apne aap High, Medium aur Low customers ka meaning nahi dete. Unka meaning RFM values dekhkar decide karna hota hai.
-
----
-
-PRACTICAL 8 — SALES FORECASTING USING PROPHET
-
-Aim: Prophet model se agle 30 days ki sales forecast karna.
-
-Steps:
-
-1. NumPy, Pandas, Matplotlib aur Prophet libraries import karo.
-2. Date aur Sales values wala sample dataset banao.
-3. Prophet ke required format mein date ko ds aur sales ko y ke naam se represent karo.
-4. Prophet model initialize karo.
-5. Model ko available historical sales data par fit karo.
-6. Future dataframe create karo, jisme agle 30 days include hon.
-7. Model se future sales predictions generate karo.
-8. Forecast results mein predicted sales (yhat) identify karo.
-9. Lower aur upper prediction bounds (yhat_lower aur yhat_upper) dekho.
-10. Agle 30 days ki forecast table display karo.
-11. Forecast graph plot karo.
-12. Graph aur prediction bounds ko interpret karo.
-
-Note: Is practical mein original code poore historical dataset par model fit karta hai. Ismein separate test set aur MAPE/RMSE calculation nahi hai.
-
----
-
-PRACTICAL 9 — SENTIMENT ANALYSIS VS STAR RATING
-
-Aim: Text reviews ka sentiment identify karna aur sentiment score aur star rating ke beech correlation calculate karna.
-
-Steps:
-
-1. Pandas, TextBlob aur Pearson correlation ke required components import karo.
-2. Sample reviews aur unki star ratings ka dataset banao.
-3. TextBlob se har review ka sentiment polarity score calculate karo.
-4. Polarity score positive ho toh review ko Positive label do.
-5. Polarity score negative ho toh Negative label do.
-6. Polarity score zero ho toh Neutral label do.
-7. Dataset mein sentiment score aur sentiment category add karo.
-8. Review, rating, score aur sentiment ke saath final table display karo.
-9. Sentiment score aur star rating ke beech Pearson correlation calculate karo.
-10. Correlation result interpret karo: positive correlation ka matlab hai ki higher sentiment scores ke saath generally higher ratings associate hoti hain; negative correlation opposite relationship indicate karti hai.
-11. Correlation ki strength aur direction ko result ke according explain karo.
-
-Important: Correlation relationship batata hai, causation prove nahi karta.
-
----
-
-PRACTICAL 10 — MARKET BASKET ANALYSIS USING APRIORI
-
-Aim: Customer transactions se frequently purchased item combinations aur association rules identify karna.
-
-Steps:
-
-1. Pandas aur mlxtend library ke required components import karo.
-2. Sample transactions ka dataset banao, jisme har transaction mein purchased items ki list ho.
-3. TransactionEncoder initialize karo.
-4. Transactions ko one-hot encoded format mein convert karo, jahan har item ka presence True aur absence False se represent ho.
-5. Encoded data ko DataFrame mein convert karo.
-6. Apriori algorithm apply karo.
-7. Minimum support threshold 0.3 set karo.
-8. Frequent itemsets generate karo.
-9. Itemsets ke saath unka support display karo.
-10. Association rules generate karo.
-11. Confidence metric use karo aur minimum confidence threshold 0.4 set karo.
-12. Rules mein antecedents, consequents, support, confidence aur lift identify karo.
-13. Antecedent ko pehle se maujood item ya item combination aur consequent ko uske saath associated item ke roop mein interpret karo.
-14. Support se item combination ki frequency, confidence se association ki reliability aur lift se items ke association ki relative strength samjho.
-15. Rules ko business context mein interpret karo, jaise kaunse products aksar saath kharide jaate hain.
-
----
-
-QUICK REVISION — HAR PRACTICAL KA MAIN OUTPUT
-
-1. Bias Detection: Disparate Impact (DI) aur Statistical Parity Difference (SPD).
-2. Prophet vs ARIMA: Forecast graph, MAPE aur RMSE.
-3. Churn Prediction: Confusion matrix, Accuracy, Precision, Recall aur FN cost ₹10,000.
-4. Movie Recommendation: SVD aur KNN ke RMSE aur MAE.
-5. Fraud Detection: Confusion matrix, Precision aur Recall.
-6. Churn Prediction: Confusion matrix, Accuracy, Precision, Recall aur FN cost ₹5,000.
-7. RFM + K-Means: Customer RFM table aur cluster assignments.
-8. Prophet Forecasting: Agle 30 days ki predicted sales aur prediction bounds.
-9. Sentiment Analysis: Review sentiment, polarity score aur Pearson correlation.
-10. Apriori: Frequent itemsets aur association rules.
-
-
-
-
-
-PP 2026 — PRACTICAL EXAM REFERENCE FILE
-Use only if your college permits saved reference files during the exam.
-Open with Notepad or VS Code; copy the required code into your approved Python/Jupyter environment.
-
-PRACTICAL 1 — BIAS DETECTION
-import pandas as pd
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-df=pd.DataFrame({"gender":["Male","Female"]*20,"score":[60,80,55,75,90,65,70,85]*5})
-df["hired"]=((df.score+(df.gender=="Male")*8)>=70).astype(int)
-df["gender_code"]=(df.gender=="Male").astype(int)
-X,y=df[["gender_code","score"]],df.hired
-Xtr,Xte,ytr,yte=train_test_split(X,y,random_state=42)
-m=LogisticRegression().fit(Xtr,ytr); t=Xte.copy(); t["pred"]=m.predict(Xte)
-male=t.loc[t.gender_code==1,"pred"].mean(); female=t.loc[t.gender_code==0,"pred"].mean()
-di=female/male if male else 0
-print("Disparate Impact:",di,"\nStatistical Parity Difference:",female-male)
-print("Potentially biased" if di<0.8 else "DI rule does not flag bias")
-
-PRACTICAL 2 — PROPHET VS ARIMA
-import numpy as np,pandas as pd,matplotlib.pyplot as plt
-from prophet import Prophet
-from statsmodels.tsa.arima.model import ARIMA
-from sklearn.metrics import mean_absolute_percentage_error,mean_squared_error
-np.random.seed(1)
-df=pd.DataFrame({"Date":pd.date_range("2025-01-01",periods=120),"Sales":100+np.arange(120)*.5+np.random.randn(120)*5})
-tr,te=df[:-30],df[-30:]
-p=Prophet(weekly_seasonality=True,daily_seasonality=True).fit(tr.rename(columns={"Date":"ds","Sales":"y"}))
-pf=p.predict(p.make_future_dataframe(periods=30)).tail(30)
-a=ARIMA(tr.Sales,order=(2,1,1)).fit().forecast(30)
-for n,v in [("Prophet",pf.yhat.values),("ARIMA",a.values)]:
- print(n,"MAPE",mean_absolute_percentage_error(te.Sales,v)*100,"RMSE",mean_squared_error(te.Sales,v)**.5)
-plt.plot(te.Date,te.Sales,label="Actual"); plt.plot(te.Date,pf.yhat,label="Prophet"); plt.plot(te.Date,a,label="ARIMA")
-plt.fill_between(te.Date,pf.yhat_lower,pf.yhat_upper,alpha=.2); plt.legend(); plt.show()
-
-PRACTICAL 3 — CHURN, FN COST Rs. 10,000
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder,StandardScaler
-from sklearn.pipeline import make_pipeline
-from sklearn.impute import SimpleImputer
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import confusion_matrix,accuracy_score,precision_score,recall_score
-df=pd.DataFrame({"tenure":[2,5,10,20,40,60,3,8,15,50,4,30]*5,"charges":[90,80,70,60,50,40,100,95,75,45,110,55]*5,"contract":["Month","Month","Month","Year","Year","Two","Month","Month","Year","Two","Month","Year"]*5,"Churn":[1,1,1,0,0,0,1,1,0,0,1,0]*5})
-X,y=df.drop(columns="Churn"),df.Churn
-prep=ColumnTransformer([("num",make_pipeline(SimpleImputer(),StandardScaler()),["tenure","charges"]),("cat",OneHotEncoder(handle_unknown="ignore"),["contract"])])
-Xtr,Xte,ytr,yte=train_test_split(X,y,test_size=.25,random_state=1,stratify=y)
-for n,model in [("Logistic",LogisticRegression()),("Random Forest",RandomForestClassifier(random_state=1))]:
- pipe=make_pipeline(prep,model).fit(Xtr,ytr); pred=pipe.predict(Xte); cm=confusion_matrix(yte,pred,labels=[0,1]); fn=cm[1,0]
- print(n,"Accuracy",accuracy_score(yte,pred),"Precision",precision_score(yte,pred,zero_division=0),"Recall",recall_score(yte,pred,zero_division=0),"CM",cm,"FN Cost Rs.",fn*10000)
-
-PRACTICAL 4 — MOVIE RECOMMENDATION: SVD VS KNN
-from surprise import Dataset,SVD,KNNBasic,accuracy
-from surprise.model_selection import train_test_split
-data=Dataset.load_builtin("ml-100k"); tr,te=train_test_split(data,test_size=.25,random_state=42)
-for n,m in [("SVD",SVD(random_state=42)),("KNN",KNNBasic(verbose=False))]:
- m.fit(tr); pred=m.test(te); print(n); accuracy.rmse(pred); accuracy.mae(pred)
-
-Practical 4 (Part 2 with dataset)
-import pandas as pd
-from surprise import Dataset, Reader, SVD, KNNBasic, accuracy
-from surprise.model_selection import train_test_split
-
-# Load dataset given by mam
-df = pd.read_csv("ratings.csv")
-
-# Prepare dataset
-reader = Reader(rating_scale=(1, 5))
-data = Dataset.load_from_df(
-    df[["userId", "movieId", "rating"]], reader
-)
-
-# Split dataset
-train, test = train_test_split(
-    data, test_size=0.25, random_state=42
-)
-
-# Compare SVD and KNN
-for name, model in [
-    ("SVD", SVD(random_state=42)),
-    ("KNN", KNNBasic(verbose=False))
-]:
-    model.fit(train)
-    predictions = model.test(test)
-
-    print(name)
-    accuracy.rmse(predictions)
-    accuracy.mae(predictions)
-
-PRACTICAL 5 — ISOLATION FOREST FRAUD DETECTION
-import numpy as np
-from sklearn.ensemble import IsolationForest
-from sklearn.metrics import precision_score,recall_score,confusion_matrix
-np.random.seed(1); X=np.r_[np.random.normal(0,1,(99,3)),np.random.normal(5,1,(1,3))]; y=[0]*99+[1]
-pred=(IsolationForest(contamination=.01,random_state=1).fit_predict(X)==-1).astype(int)
-print(confusion_matrix(y,pred)); print("Precision",precision_score(y,pred,zero_division=0),"Recall",recall_score(y,pred,zero_division=0))
-
-PRACTICAL 6 — CHURN, FN COST Rs. 5,000
-Run Practical 3 code and change fn*10000 to fn*5000.
-
-PRACTICAL 7 — RFM + K-MEANS
-import pandas as pd,numpy as np
-from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import KMeans
-np.random.seed(1)
-df=pd.DataFrame({"CustomerID":np.random.randint(1,21,100),"Date":pd.to_datetime("2026-01-01")+pd.to_timedelta(np.random.randint(0,90,100),unit="D"),"Amount":np.random.randint(100,2000,100)})
-today=df.Date.max()+pd.Timedelta(days=1)
-rfm=df.groupby("CustomerID").agg(Recency=("Date",lambda x:(today-x.max()).days),Frequency=("Date","count"),Monetary=("Amount","sum")).reset_index()
-rfm["Cluster"]=KMeans(n_clusters=3,random_state=1,n_init=10).fit_predict(StandardScaler().fit_transform(rfm[["Recency","Frequency","Monetary"]]))
-print(rfm)
-
-PRACTICAL 8 — PROPHET FORECAST NEXT 30 DAYS
-import numpy as np,pandas as pd,matplotlib.pyplot as plt
-from prophet import Prophet
-np.random.seed(1)
-df=pd.DataFrame({"ds":pd.date_range("2025-01-01",periods=100),"y":100+np.arange(100)*.5+np.random.randn(100)*4})
-m=Prophet(weekly_seasonality=True,daily_seasonality=True).fit(df)
-f=m.predict(m.make_future_dataframe(periods=30))
-print(f.tail(30)[["ds","yhat","yhat_lower","yhat_upper"]]); m.plot(f); plt.show()
-
-PRACTICAL 9 — SENTIMENT VS STAR RATING
-import pandas as pd
-from textblob import TextBlob
-from scipy.stats import pearsonr
-df=pd.DataFrame({"Review":["Excellent product","Very bad product","It is okay","Love it","Waste of money"],"Rating":[5,1,3,5,1]})
-df["Score"]=df.Review.apply(lambda x:TextBlob(x).sentiment.polarity)
-df["Sentiment"]=df.Score.apply(lambda x:"Positive" if x>0 else ("Negative" if x<0 else "Neutral"))
-print(df); print("Correlation:",pearsonr(df.Score,df.Rating)[0])
-
-PRACTICAL 10 — APRIORI
-import pandas as pd
-from mlxtend.preprocessing import TransactionEncoder
-from mlxtend.frequent_patterns import apriori,association_rules
-transactions=[["Bread","Milk"],["Bread","Butter"],["Bread","Milk","Butter"],["Milk","Butter"],["Bread","Milk"],["Bread","Butter"]]
-enc=TransactionEncoder(); basket=pd.DataFrame(enc.fit(transactions).transform(transactions),columns=enc.columns_)
-items=apriori(basket,min_support=.3,use_colnames=True); print(items)
-print(association_rules(items,metric="confidence",min_threshold=.4)[["antecedents","consequents","support","confidence","lift"]])
-
-INSTALL LIBRARIES (only if permitted):
-pip install pandas numpy matplotlib scikit-learn statsmodels prophet scikit-surprise textblob scipy mlxtend
+
+
+
+
+
+
+
