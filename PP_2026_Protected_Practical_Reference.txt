@@ -137,7 +137,202 @@ hdfs dfs -cat /user/output/part-r-00000
 http://localhost:9870
 http://localhost:8088
 
-#Practical Graphx
+# practical 3 scala
+val a = 10
+val b = 5
+
+println("Addition = " + (a+b))
+println("Subtraction = " + (a-b))
+println("Multiplication = " + (a*b))
+
+var age = 22
+if (age >= 18)
+  println("Adult")
+else
+  println("Minor")
+
+val name = "Raj"
+println("Hello " + name)
+
+#Run kaise karein:
+1. "Windows + R" press karo.
+2. "cmd" type karke Enter dabao.
+3. "scala" type karke Enter dabao.
+4. Code ko line by line enter karo.
+5. Exit ke liye ":quit" type karo.
+
+#practical 4 scala crud operation 
+
+import java.nio.file.*
+
+val json = Paths.get("data.json")
+val csv = Paths.get("data.csv")
+
+// Create
+Files.writeString(json, """{"name":"Raj","age":22}""")
+Files.writeString(csv, "Name,Age\nRaj,22")
+
+// Read
+println(Files.readString(json))
+println(Files.readString(csv))
+
+// Update
+Files.writeString(json, """{"name":"Raj","age":23}""")
+Files.writeString(csv, "Name,Age\nRaj,23")
+
+// Delete
+Files.deleteIfExists(json)
+Files.deleteIfExists(csv)
+
+println("CRUD completed")
+
+#Run kaise karein:
+1. "C:\ScalaPractical4" naam ka folder banao.
+2. Code ko "Practical4.scala" naam se save karo.
+3. CMD open karo.
+4. Ye commands chalao:
+cd /d C:\ScalaPractical4
+scala run Practical4.scala
+
+
+
+#Note: Yeh basic file-level CRUD hai. Agar tumhare journal mein Spark RDD/DataFrame wala Practical 4 hai, toh uska code alag hoga.
+
+#practical 5
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import when
+
+spark = SparkSession.builder.appName("CSV").getOrCreate()
+
+data = [("Raj", 22), ("Amit", 25)]
+df = spark.createDataFrame(data, ["Name", "Age"])
+
+# Create CSV
+df.write.mode("overwrite").option("header", True).csv("students")
+
+# Read
+df.show()
+
+# Update
+df = df.withColumn(
+    "Age", when(df.Name == "Raj", 23).otherwise(df.Age)
+)
+df.show()
+
+# Delete row
+df = df.filter(df.Name != "Amit")
+df.show()
+
+spark.stop()
+
+Run kaise karein:
+
+1. CMD open karo.
+2. Check karo Python installed hai:
+
+python --version
+
+3. PySpark install nahi hai toh:
+
+pip install pyspark
+
+4. "C:\PySparkPractical5" folder banao.
+5. Code ko "practical5.py" naam se save karo.
+6. CMD mein run karo:
+
+cd /d C:\PySparkPractical5
+python practical5.py
+
+
+
+#Note: PySpark chalane ke liye Java/JDK bhi properly configured hona chahiye.
+
+
+#practical 6 redis 
+
+SET course:name "Big Data Technologies"
+GET course:name
+
+HSET employee:1 name Raj department IT salary 30000
+HSET employee:1 salary 40000
+HGETALL employee:1
+
+RPUSH tasks Task1 Task2 Task3 Task4 Task5
+LRANGE tasks 0 2
+RPOP tasks
+
+SADD languages Python Java C Python SQL
+SMEMBERS languages
+
+ZADD leaderboard 80 Raj 95 Priya 70 Amit
+ZREVRANGE leaderboard 0 -1 WITHSCORES
+
+SET temporary "Hello" EX 30
+TTL temporary
+GET temporary
+
+#practical 7 mongodb
+
+Aim: To perform CRUD operations in MongoDB using MongoDB Compass.
+
+Step 1: Connect to MongoDB
+Open MongoDB Compass, enter "mongodb://localhost:27017" in the connection field and click Connect.
+
+Step 2: Create Database
+Click Create Database. Enter database name "college" and collection name "students", then click Create Database.
+
+Step 3: Insert Documents (Create)
+Open the "students" collection, click Add Data → Insert Document. Insert the following document and click Insert:
+
+{
+  "rollno": 1,
+  "name": "Aditi",
+  "age": 21,
+  "city": "Mumbai"
+}
+
+Similarly, insert another document:
+
+{
+  "rollno": 2,
+  "name": "Rahul",
+  "age": 22,
+  "city": "Pune"
+}
+
+Step 4: Read Documents (Read)
+Open the "students" collection. All documents will be displayed. To search for a particular student, enter "{"city": "Mumbai"}" in the Filter field and click Find.
+
+Step 5: Comparison Operator
+To find students whose age is greater than 21, enter the following in the Filter field and click Find:
+
+{"age": {"$gt": 21}}
+
+Step 6: Query Array Fields
+Click Add Data → Insert Document and insert:
+
+{
+  "rollno": 3,
+  "name": "Priya",
+  "subjects": ["Python", "SQL", "Java"]
+}
+
+To find students studying Python, enter "{"subjects": "Python"}" in the Filter field and click Find.
+
+Step 7: Update Document (Update)
+Find Aditi's document. Click the Edit icon, change her age from 21 to 22, and click Update.
+
+Alternatively, use the Edit Document window to modify the required field.
+
+Step 8: Delete Document (Delete)
+Find Rahul's document. Click the Delete icon beside his document and confirm the deletion.
+
+Step 9: Create Index
+Open the "students" collection and select the Indexes tab. Click Create Index, enter "name" as the field and select ascending order ("1"). Click Create Index.
+
+Result: Successfully performed Create, Read, Update and Delete (CRUD) operations, comparison queries, array queries and index creation in MongoDB Compass.
+
+#Practical 8 Graphx
 import org.apache.spark.graphx._
 
 val v = sc.parallelize(Array((1L,"A"),(2L,"B"),(3L,"C")))
