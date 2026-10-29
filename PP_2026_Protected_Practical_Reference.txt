@@ -122,6 +122,18 @@ Hive and Pig are tools that make data analysis easier on top of Hadoop.
 #Open a Command Prompt window and execute 
 cd C:\wordcount
 
+javac -classpath "C:\Hadoop\hadoop-3.4.3\share\hadoop\common\*;C:\Hadoop\hadoop-
+3.4.3\share\hadoop\common\lib\*;C:\Hadoop\hadoop-
+3.4.3\share\hadoop\mapreduce\*;C:\Hadoop\hadoop-3.4.3\share\hadoop\hdfs\*" -d .
+WordCountMapper.java WordCountReducer.java WordCountDriver.java
+
+jar -cvf wordcount.jar *.class
+hdfs dfs -mkdir -p /users/inputs
+hdfs dfs -put input.txt /users/inputs
+hadoop jar wordcount.jar WordCountDriver /users/inputs /user/output
+hdfs dfs -cat /user/output/part-r-00000
+
+
 
 
 
